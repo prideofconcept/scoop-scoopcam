@@ -13,34 +13,37 @@ admin.initializeApp({
 var db = admin.firestore();
 const doc = db.collection('camera').doc('scoopcam1') // todo: s houdl the collections be exported from the firebase module
 
-//loadCUrrentFirestoreData()
-setupListeners();
+let isCameraOn = false;
 
-function loadCUrrentFirestoreData() {
-    doc.get()
-        .then(handleCameraUpdate)
-}
-
-function setupListeners(){
-    doc.onSnapshot(handleCameraUpdate,
-            (error) => { console.log("Error getting documents: ", error);})
-}
-
-function handleCameraUpdate(docSnapshot){
+const handleCurrentCameraUpdate = (docSnapshot) => {
     //console.log(docSnapshot.id, '=>', docSnapshot.data());
     const data = docSnapshot.data()
     if(data.onRide) {
         console.log('we are on ride')
-        child = spawn('python', ['cam_record.py', 'media/']);
+        if(!isCameraOn){
+            console.log('turning camera ON!')
+            //child = spawn('python', ['cam_record.py', 'media/']);
+            isCameraOn = true;
+        }
     } else {
-        console.log('turning off camera')
-        if(child){
+        console.log('we are NOT riding')
+        if(child && isCameraOn){
+            console.log('turning off camera')
             child.kill();
+            isCameraOn = false;
         }
     }
 }
-/*
-setTimeout(function(){
-    console.log('kill');
 
-}, 3000);*/
+const loadCUrrentFirestoreData = () => {
+    doc.get()
+        .then(handleCurrentCameraUpdate)
+}
+
+const setupListeners = () => {
+    doc.onSnapshot(handleCurrentCameraUpdate,
+        (error) => { console.log("Error getting documents: ", error);})
+}
+
+loadCUrrentFirestoreData()
+setupListeners();
