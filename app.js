@@ -1,5 +1,6 @@
 const spawn = require('child_process').spawn;
 const firebase = require("firebase");
+const googleStorage = require('@google-cloud/storage');
 const admin = require('firebase-admin');
 
 const chokidar = require('chokidar');
@@ -12,15 +13,22 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
 
+const storage = new googleStorage({
+    projectId: 'yetigo-3b1de',
+    keyFilename: './key/serviceAccount.json'
+});
+
 const db = admin.firestore();
 const doc = db.collection('camera').doc('scoopcam1'); // todo: should the collections be exported from the firebase module
 
 const root = {
     isCameraOn: false,
-    currRideId: null
+    currRideId: null,
+    bucket : null
+
 }
 const rideCleanUp = () => {
-    rimraf('.media/*', function() {console.log('...clean, ready.')})
+    rimraf('media/*', function() {console.log('...clean, ready.')})
 }
 const handleCurrentCameraUpdate = (docSnapshot) => {
     //console.log(docSnapshot.id, '=>', docSnapshot.data());
@@ -28,6 +36,7 @@ const handleCurrentCameraUpdate = (docSnapshot) => {
     const data = docSnapshot.data();
     root.isOnRide = data.onRide;
     root.currRideId = data.currRide;
+    root.bucket = storage.bucket(`yetigo-3b1de.appspot.com`);
 
     if(root.isOnRide) {
         console.log('we are on ride', root.currRideId);
@@ -53,14 +62,25 @@ const loadCUrrentFirestoreData = () => {
 }
 
 const onNewMediaFile = (path) => {
-    if(path.includes('.log')){
-        console.log('just a log file ... skipping')
-        return
-    }
+    if(!path.includes('h264') || !root.isOnRide){return}
 
+    const path_splits = path.split('/')
+    const filename = path_splits[path_splits.length - 1]
     //upload to bucket
-    console.log('uploading ',path, 'to', root.currRideId);
-    //console.log()
+    const uploadOpts = {
+        metadata : { contentType: 'video/h264'},
+        destination: `live_ride_videos/${root.currRideId}/${filename}`
+    };
+
+    console.log('^ ',path, ' -> ', root.currRideId);
+    root.bucket.upload(`${path}`,uploadOpts, function(err, file) {
+        if (err) {
+            console.log('errr', err)
+            return
+        }
+        console.log('.',file.name)
+
+    });
 }
 
 const setupListeners = () => {

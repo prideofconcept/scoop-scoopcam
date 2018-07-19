@@ -6,6 +6,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "@google-cloud/storage": "^1.7.0",
     "chokidar": "^2.0.4",
     "firebase": "^5.2.0",
     "firebase-admin": "^5.12.1",

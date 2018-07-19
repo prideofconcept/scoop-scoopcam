@@ -1,6 +1,8 @@
 #key
 key/serviceAccount.json
 
+media/
+
 # Logs
 logs
 *.log

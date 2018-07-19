@@ -41,6 +41,9 @@ def start_record():
 #init
 if isPiCamera():
     start_record()
+else:
+    fm = open("media/test.h264","w+")
+    fm.close()
 
 #exit stuff
 print("closing down")
