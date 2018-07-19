@@ -1,20 +1,26 @@
 import sched, time, sys
 import platform
 
-def isPiCamera():
-    return  platform.system().find("Darwin") <= -1
+def isPiCamera(): #todo https://stackoverflow.com/questions/14050281/how-to-check-if-a-python-module-exists-without-importing-it
+    return  platform.machine().find("arm") >= 0
 
 if isPiCamera():
     import picamera
 
-print("startup." + str(platform.system()))
+print( "startup: " + str(platform.machine()) )
+
 f = None
+ride = None
+
 try:
     #todo: integrate this ride id into save routine
     ride = sys.argv[1]
-    f = open("media/" + ride + ".log","w+")
+
 except:
-    print("an error occuried getting arg or opening file")
+    print("an error occuried getting arg")
+    ride = "unkown_ride"
+
+f = open("media/" + ride + ".log","w+") #todo try/catch here
 
 starttime=time.time()
 
