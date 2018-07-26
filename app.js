@@ -83,6 +83,10 @@ const onNewMediaFile = (path) => {
     });
 }
 
+const sendHeartbeat = () => {
+    doc.set({heartbeat: + new Date()},{merge: true})
+}
+
 const setupListeners = () => {
     //firestore camera doc changes
     doc.onSnapshot(handleCurrentCameraUpdate,
@@ -98,6 +102,9 @@ const setupListeners = () => {
             }
         })
     .on('add', onNewMediaFile);
+
+    //setup heartbeat
+    setInterval(sendHeartbeat, 9000);
 }
 
 rideCleanUp();
