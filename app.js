@@ -20,6 +20,7 @@ const storage = new googleStorage({
 
 const db = admin.firestore();
 const doc = db.collection('camera').doc('scoopcam1'); // todo: should the collections be exported from the firebase module
+const doc_hb = db.collection('camera').doc('scoopcam1_heartbeat'); // todo: should the collections be exported from the firebase module
 
 const root = {
     isCameraOn: false,
@@ -34,8 +35,9 @@ const handleCurrentCameraUpdate = (docSnapshot) => {
     //console.log(docSnapshot.id, '=>', docSnapshot.data());
 
     const data = docSnapshot.data();
-    root.isOnRide = data.onRide;
-    root.currRideId = data.currRide;
+
+    root.isOnRide = data ? data.onRide : false;
+    root.currRideId = data ? data.currRide : null;
     root.bucket = storage.bucket(`yetigo-3b1de.appspot.com`);
 
     if(root.isOnRide) {
@@ -84,7 +86,7 @@ const onNewMediaFile = (path) => {
 }
 
 const sendHeartbeat = () => {
-    doc.set({heartbeat: + new Date()},{merge: true})
+    doc_hb.set({heartbeat: + new Date()},{merge: true})
 }
 
 const setupListeners = () => {
