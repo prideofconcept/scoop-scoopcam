@@ -43,6 +43,8 @@ if isPiCamera():
     start_record()
 else:
     fm = open("media/test.h264","w+")
+    time.sleep(10)
+    fm.write("test data")
     fm.close()
 
 #exit stuff

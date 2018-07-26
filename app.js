@@ -89,7 +89,15 @@ const setupListeners = () => {
         (error) => { console.log("Error getting documents: ", error);})
 
     //media directory changes
-    chokidar.watch('media/', {ignored: /(^|[\/\\])\../}).on('add', onNewMediaFile);
+    chokidar.watch('media/', {
+        ignored: /(^|[\/\\])\../,
+        ignoreInitial: true,
+        awaitWriteFinish: {
+            stabilityThreshold: 3000,
+            pollInterval: 1000
+            }
+        })
+    .on('add', onNewMediaFile);
 }
 
 rideCleanUp();
