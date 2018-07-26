@@ -1,0 +1,14 @@
+[Unit]
+Description=scoopcam.js - camera app
+Documentation=https://example.com
+After=network-online.target
+
+[Service]
+Environment=
+Type=simple
+User=pi
+ExecStart=/home/pi/.nvm/versions/node/v10.6.0/bin/node /home/pi/picamera/CameraApp/app.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
