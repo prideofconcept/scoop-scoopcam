@@ -20,8 +20,9 @@ except:
     print("an error occuried getting arg")
     ride = "unkown_ride"
 
-f = open("media/" + ride + ".log","w+") #todo try/catch here
-
+logname = 'media/{}-{}.log'.format( ride, time.time())
+f = open(logname,"w+") #todo try/catch here
+f.write(time.time())
 starttime=time.time()
 
 def start_record():
@@ -29,14 +30,17 @@ def start_record():
         camera.resolution = (800, 600)
         camera.framerate = 24
         i = 1
-        camera.start_recording('media/%d.h264' % i)
+        fname = 'media/{}.{}-{}.h264'.format(i, ride, time.time())
+        camera.start_recording(fname)
 
         #sched
         while True:
             print "tick"
             i = i+1
+            fname = 'media/{}.{}-{}.h264'.format(i, ride, time.time())
             camera.wait_recording(10)
-            camera.split_recording('media/%d.h264' % i)
+            tmstmp = time.time()
+            camera.split_recording(fname)
 
 #init
 if isPiCamera():
