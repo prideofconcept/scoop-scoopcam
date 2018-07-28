@@ -1,5 +1,5 @@
 [Unit]
-Description=scoopcam.js - camera app
+Description=scoopcam.js - making your environment variables rad
 Documentation=https://example.com
 After=network-online.target
 
@@ -7,6 +7,9 @@ After=network-online.target
 Environment=
 Type=simple
 User=pi
+WorkingDirectory=/home/pi/picamera/CameraApp
+ExecStartPre=/usr/bin/git pull origin master
+ExecStartPre=/home/pi/.nvm/versions/node/v10.6.0/bin/npm install
 ExecStart=/home/pi/.nvm/versions/node/v10.6.0/bin/node /home/pi/picamera/CameraApp/app.js
 Restart=on-failure
 
