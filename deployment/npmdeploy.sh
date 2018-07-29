@@ -1,3 +1,3 @@
 #!/bin/bash
-. /home/pi/.nvm/nvm.sh
+./home/pi/.nvm/nvm.sh
 npm install

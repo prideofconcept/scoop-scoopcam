@@ -22,7 +22,7 @@ except:
 
 logname = 'media/{}-{}.log'.format( ride, time.time())
 f = open(logname,"w+") #todo try/catch here
-f.write(time.time())
+f.write("%f" % time.time())
 starttime=time.time()
 
 def start_record():
