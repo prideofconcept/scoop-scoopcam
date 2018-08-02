@@ -8,9 +8,9 @@ Environment=NODE_PATH=/home/pi/.nvm/versions/node/v10.6.0/bin/node
 Type=simple
 User=pi
 WorkingDirectory=/home/pi/picamera/CameraApp
-ExecStartPre=/usr/bin/git fetch
-ExecStartPre=/usr/bin/git reset --hard origin/master
-ExecStartPre=/usr/bin/git pull origin master
+#ExecStartPre=/usr/bin/git fetch
+#ExecStartPre=/usr/bin/git reset --hard origin/master
+#ExecStartPre=/usr/bin/git pull origin master
 #ExecStartPre=/home/pi/picamera/CameraApp/deployment/npmdeploy.sh
 ExecStart=/home/pi/.nvm/versions/node/v10.6.0/bin/node /home/pi/picamera/CameraApp/app.js
 Restart=on-failure
