@@ -4,18 +4,18 @@ Documentation=https://example.com
 After=network-online.target
 
 [Service]
-Environment=CAM=scoopcam3
+Environment=CAM=scoopcam#
 Type=simple
 User=pi
 WorkingDirectory=/home/pi/picamera/CameraApp
-#ExecStartPre=/usr/bin/git fetch
-#ExecStartPre=/usr/bin/git reset --hard origin/master
-#ExecStartPre=/usr/bin/git pull origin master
+ExecStartPre=/usr/bin/git fetch
+ExecStartPre=/usr/bin/git reset --hard origin/master
+ExecStartPre=/usr/bin/git pull origin master
 #ExecStartPre=/home/pi/picamera/CameraApp/deployment/npmdeploy.sh
+#ExecStart=/usr/local/bin/npm install
 ExecStart=/usr/local/bin/npm start
 Restart=on-failure
+TimeoutSec=infinity
 
 [Install]
 WantedBy=multi-user.target
-
-

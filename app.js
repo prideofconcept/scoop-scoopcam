@@ -9,6 +9,9 @@ const rimraf = require('rimraf');
 let child = null;
 const serviceAccount = require('./key/serviceAccount.json');
 
+const cameraName = process.env.CAM || 'scoopcamx'
+console.log('setup - cameraname',cameraName)
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });
@@ -26,8 +29,8 @@ const root = {
     isCameraOn: false,
     currRideId: null,
     bucket : null
-
 }
+
 const rideCleanUp = () => {
     rimraf('media/*', function() {console.log('...clean, ready.')})
 }
