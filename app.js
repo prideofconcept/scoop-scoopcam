@@ -9,8 +9,8 @@ const rimraf = require('rimraf');
 let child = null;
 const serviceAccount = require('./key/serviceAccount.json');
 
-const cameraName = process.env.CAM || 'scoopcamx'
-console.log('setup - cameraname',cameraName)
+const camera_id = process.env.CAM || 'scoopcamx'
+console.log('setup - cameraname',camera_id)
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -22,8 +22,8 @@ const storage = new googleStorage({
 });
 
 const db = admin.firestore();
-const doc = db.collection('camera').doc('scoopcam1'); // todo: should the collections be exported from the firebase module
-const doc_hb = db.collection('camera').doc('scoopcam1_heartbeat'); // todo: should the collections be exported from the firebase module
+const doc = db.collection('camera').doc(camera_id); // todo: should the collections be exported from the firebase module
+const doc_hb = db.collection('camera').doc(`${camera_id}_heartbeat`); // todo: should the collections be exported from the firebase module
 
 const root = {
     isCameraOn: false,
