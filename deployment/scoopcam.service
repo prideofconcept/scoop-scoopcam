@@ -8,9 +8,11 @@ Environment=CAM=scoopcam#
 Type=simple
 User=pi
 WorkingDirectory=/home/pi/picamera/CameraApp
-ExecStartPre=/usr/bin/git fetch
-ExecStartPre=/usr/bin/git reset --hard origin/master
-ExecStartPre=/usr/bin/git pull origin master
+#ExecStartPre= /bin/bash -c "eval `ssh-agent -s`"
+#ExecStartPre=/usr/bin/ssh-add
+#ExecStartPre=/usr/bin/git fetch
+#ExecStartPre=/usr/bin/git reset --hard origin/master
+#ExecStartPre=/usr/bin/git pull origin master
 #ExecStartPre=/home/pi/picamera/CameraApp/deployment/npmdeploy.sh
 #ExecStart=/usr/local/bin/npm install
 ExecStart=/usr/local/bin/npm start
