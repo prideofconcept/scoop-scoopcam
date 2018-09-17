@@ -90,6 +90,7 @@ const onNewMediaFile = (path) => {
 
 const sendHeartbeat = () => {
     doc_hb.set({heartbeat: + new Date()},{merge: true})
+    console.log(',')
 }
 
 const setupListeners = () => {
@@ -113,5 +114,5 @@ const setupListeners = () => {
 }
 
 rideCleanUp();
-loadCUrrentFirestoreData();
+//loadCUrrentFirestoreData();
 setupListeners();
