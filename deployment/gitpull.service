@@ -1,0 +1,10 @@
+[Unit]
+Description=update CamerApp with git pull
+
+[Service]
+Type=simple
+WorkingDirectory=/home/pi/picamera/CameraApp
+ExecStart=/usr/bin/git pull origin master
+
+[Install]
+WantedBy=multi-user.target
