@@ -41,7 +41,7 @@ const handleCurrentCameraUpdate = (docSnapshot) => {
     const data = docSnapshot.data();
 
     root.isOnRide = data ? data.onRide : false;
-    root.currRideId = data ? data.currRide : null;
+    root.currRideId = data ? data.currRide : null; //todo - if isOnRide == true; and data.currRide is falsey - lets default to a unkownRideDateTime ride ID
     root.bucket = storage.bucket(`yetigo-3b1de.appspot.com`);
 
     if(root.isOnRide) {
@@ -93,7 +93,7 @@ const sendHeartbeat = () => {
     root.tickLimit = root.tickLimit + 1;
     doc_hb.set({heartbeat: + new Date()},{merge: true})
 
-    if(root.tickLimit >= 10) {
+    if(root.tickLimit >= 5) {
         console.log(',')
         root.tickLimit = 0
     }
@@ -116,7 +116,8 @@ const setupListeners = () => {
     .on('add', onNewMediaFile);
 
     //setup heartbeat
-    setInterval(sendHeartbeat, 10000);
+    sendHeartbeat()
+    setInterval(sendHeartbeat, 300000); //5min
 }
 
 rideCleanUp();
