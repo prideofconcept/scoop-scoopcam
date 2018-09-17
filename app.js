@@ -28,7 +28,8 @@ const doc_hb = db.collection('camera').doc(`${camera_id}_heartbeat`); // todo: s
 const root = {
     isCameraOn: false,
     currRideId: null,
-    bucket : null
+    bucket : null,
+    tickLimit: 0,
 }
 
 const rideCleanUp = () => {
@@ -89,8 +90,13 @@ const onNewMediaFile = (path) => {
 }
 
 const sendHeartbeat = () => {
+    root.tickLimit = root.tickLimit + 1;
     doc_hb.set({heartbeat: + new Date()},{merge: true})
-    console.log(',')
+
+    if(root.tickLimit >= 10) {
+        console.log(',')
+        root.tickLimit = 0
+    }
 }
 
 const setupListeners = () => {
@@ -110,7 +116,7 @@ const setupListeners = () => {
     .on('add', onNewMediaFile);
 
     //setup heartbeat
-    setInterval(sendHeartbeat, 9000);
+    setInterval(sendHeartbeat, 10000);
 }
 
 rideCleanUp();
